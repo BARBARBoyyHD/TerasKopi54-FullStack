@@ -13,7 +13,7 @@ const helmet = require('helmet');
 
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 100, // Limit each IP to 5 requests per windowMs
+  max: 1000, // Limit each IP to 5 requests per windowMs
   message: (req, res) => `Too many requests from this IP: ${req.ip}, please try again later.`,
   standardHeaders: true, // Correct spelling
   legacyHeaders: false,  // Correct spelling
@@ -45,11 +45,14 @@ const port = process.env.PORT;
 
 // Middleware
 app.use(cors({
-  credentials:true,
-  origin:"http://localhost:3000",
+  origin: 'http://localhost:3000', // Replace with your frontend origin
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+  credentials: true, // Allow cookies and authorization headers
 }));
-app.use(limiter)
-app.use(helmet());
+
+app.use(helmet({
+  crossOriginResourcePolicy: false,
+}));
 app.use(express.json({ limit: '10kb' })); // Limit to 10KB
 app.use(express.urlencoded({ extended: true, limit: '10kb' }));
 app.use(express.static("uploads"));
@@ -62,6 +65,10 @@ app.post("/api/register/users",require("./src/routes/RegisterCashierRoutes"));
 
 // User login endpoint
 app.post("/api/login/users", loginLimiter,require("./src/routes/loginCashierRoutes"));
+
+// update user profile
+
+app.put("/api/user/profile/update",upload.single("image"),authUser,refreshToken,csrfValidate,require("./src/routes/updateUserProfileRoutes"))
 
 // -----------------------------------------------------------------------
 app.get("/api/test",(req,res)=>{
@@ -132,7 +139,18 @@ app.get("/api/all/orders", authUser,refreshToken,csrfValidate,require("./src/rou
 
 // ------------------------------------------------------------------------------------------ //
 
-app.get("/api/user/logout",authUser,refreshToken,csrfValidate,require("./src/routes/userLogoutRoutes"))
+// cart
+
+app.get("/api/cart/item",require("./src/routes/getCartRoutes"))
+app.post("/api/add/to/cart",require("./src/routes/addToCartRoutes"))
+
+app.get("/api/user/logout",refreshToken,csrfValidate,require("./src/routes/userLogoutRoutes"))
+
+app.get("/api/auth/user",authUser,refreshToken,csrfValidate,(req,res)=>{
+  res.json({
+    message:"Access Passed"
+  })
+})
 
 app.listen(port, () => {
   console.log("http://localhost:" + port);

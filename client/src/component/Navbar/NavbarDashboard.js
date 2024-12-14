@@ -8,7 +8,9 @@ const NavbarDashboard = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const navigate = useNavigate();
-
+  const handleGoToHome = () => {
+    navigate("/");
+  };
   const toggleSidebar = () => {
     setIsSidebarOpen((prevState) => !prevState);
   };
@@ -32,16 +34,10 @@ const NavbarDashboard = () => {
   return (
     <nav className="fixed top-0 left-0 w-full bg-[#272525]   ">
       <div className="max-w-7xl mx-auto flex justify-between items-center px-4 sm:px-6 py-3">
-        {/* Logo Section */}
-        <div className="flex items-center space-x-4">
-          <img src={Logo} alt="Teras Kopi Logo" className="h-12 w-auto" />
-        </div>
-
-        {/* Sidebar Toggle */}
         {isMobile && (
           <button
-            className={`text-white hover:text-green-500 focus:outline-none focus:ring-2 focus:ring-green-300 transform transition-transform ${
-              isSidebarOpen ? "rotate-90" : ""
+            className={`text-white hover:text-green-500 focus:outline-none focus:ring-2 focus:ring-green-300 transform transition-transform duration-300 ${
+              isSidebarOpen ? "rotate-90" : "rotate-0"
             }`}
             aria-label="Toggle Sidebar"
             onClick={toggleSidebar}
@@ -49,6 +45,15 @@ const NavbarDashboard = () => {
             <FaBars size={24} />
           </button>
         )}
+        {/* Logo Section */}
+        <button
+          onClick={handleGoToHome}
+          className="flex items-center space-x-4"
+        >
+          <img src={Logo} alt="Teras Kopi Logo" className="h-12 w-auto" />
+        </button>
+
+        {/* Sidebar Toggle */}
 
         {/* Cart Icon */}
         <button

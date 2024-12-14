@@ -57,7 +57,7 @@ const CartPages = () => {
                 ABS
               </div>
             </div>
-            <div className="w-auto  flex flex-wrap justify-center gap-3 mt-2">
+            <div className="w-auto flex flex-wrap justify-center gap-3 mt-2">
               <div className="text-white w-[615px] h-[300px] border rounded-md border-red-600 flex justify-center items-center">
                 Chart Monthly
               </div>

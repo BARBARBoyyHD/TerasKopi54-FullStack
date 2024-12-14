@@ -67,7 +67,7 @@ exports.login = async (req, res) => {
     res
       .cookie("accessToken", accessToken, {
         httpOnly: true,
-        maxAge: 15 * 60 * 1000, // 15 minutes in milliseconds
+        maxAge: 60 * 60 * 1000, // 15 minutes in milliseconds
         secure: process.env.NODE_ENV === "production",
         sameSite: "strict",
       })

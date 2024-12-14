@@ -5,6 +5,8 @@ import { IoCafeSharp, IoClose } from "react-icons/io5";
 import { MdRestaurantMenu, MdWarehouse } from "react-icons/md";
 import { Link } from "react-router-dom";
 import ButtonLogout from "../Button/ButtonLogout";
+import ProfileButton from "../Profile/ProfileButton";
+import ProfileName from "../Profile/ProfileName";
 
 const SideBarMobile = ({ onClose }) => {
   const [isClosed, setIsClosed] = useState(false);
@@ -72,6 +74,11 @@ const SideBarMobile = ({ onClose }) => {
               <span>Cafe Branch</span>
             </Link>
           </li>
+          <div className="w-auto border border-gray-200"></div>
+          <div className="space-x-2 p-2 flex gap-2  hover:bg-gray-700 rounded-md">
+            <ProfileButton />
+            <ProfileName />
+          </div>
           <li>
             <div className="flex items-center space-x-2 p-2 hover:bg-gray-700 rounded-md">
               <FiLogOut />

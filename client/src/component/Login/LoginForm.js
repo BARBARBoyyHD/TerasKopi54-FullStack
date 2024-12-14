@@ -24,6 +24,10 @@ const LoginForm = () => {
       )
       .then((response) => {
         console.log("Login success", response.data);
+        if(response.status !== 200){
+          navigate("/pages/login");
+          return
+        }
         navigate("/pages/Dashboard"); // Redirect to Dashboard on success
         setLoading(false);
       })

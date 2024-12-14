@@ -1,31 +1,44 @@
 import React, { useState } from "react";
 import ButtonToLogin from "../Button/ButtonToLogin";
 import AlertLogin from "../Alert/AlertLogin"; // Ensure you have an AlertLogin component
+import { useDispatch, useSelector } from "react-redux";
+import { RegisterUser } from "../../redux"; // Import the action
+import { useNavigate } from "react-router-dom";
 
 const RegisterForm = () => {
-  const [loading, setLoading] = useState(false); // State for button loading
-  const [error, setError] = useState(""); // State for handling errors
+  const navigate = useNavigate()
+  const [formData, setFormData] = useState({
+    username: "",
+    password: "",
+    contact: "",
+  });
+
+  const dispatch = useDispatch();
+  const { loading, data, error } = useSelector((state) => state.register);
+
+  const handleInputChange = (e) => {
+    const { id, value } = e.target;
+    setFormData((prevState) => ({
+      ...prevState,
+      [id]: value,
+    }));
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setLoading(true);
-
-    // Simulate form submission logic
-    setTimeout(() => {
-      setLoading(false);
-
-      // For demo purposes: set an error or navigate upon success
-      const success = Math.random() > 0.5; // Simulate success/failure
-      if (!success) {
-        setError("Login failed. Please try again.");
-      }
-    }, 2000);
+    setFormData({ username: "", password: "", contact: "" });
+    // Dispatch the registration action with user data and navigate logic
+    dispatch(RegisterUser(formData, () => {
+      // Success callback: Navigate to the login page
+      alert("Registration successful! Redirecting to login...");
+      navigate("/pages/login")
+    }));
   };
 
   return (
     <main className="flex-grow flex flex-col items-center justify-center text-center px-4">
       {/* Alert Component */}
-      {error && <AlertLogin message={error} onClose={() => setError("")} />}
+      {error && <AlertLogin message={error} onClose={() => {}} />}
 
       <div className="bg-white p-8 rounded-lg shadow-lg max-w-md w-full">
         <h1 className="text-2xl font-bold text-green-900 mb-4">Register</h1>
@@ -43,6 +56,8 @@ const RegisterForm = () => {
               id="username"
               placeholder="Enter your username"
               className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
+              value={formData.username}
+              onChange={handleInputChange}
               required
             />
           </div>
@@ -60,6 +75,27 @@ const RegisterForm = () => {
               id="password"
               placeholder="Enter your password"
               className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
+              value={formData.password}
+              onChange={handleInputChange}
+              required
+            />
+          </div>
+
+          {/* Contact Input */}
+          <div>
+            <label
+              htmlFor="contact"
+              className="block text-left text-gray-600 font-semibold mb-1"
+            >
+              Contact
+            </label>
+            <input
+              type="text"
+              id="contact"
+              placeholder="Enter your contact"
+              className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
+              value={formData.contact}
+              onChange={handleInputChange}
               required
             />
           </div>
@@ -96,7 +132,7 @@ const RegisterForm = () => {
                 ></path>
               </svg>
             ) : (
-              "Login"
+              "Register"
             )}
           </button>
         </form>
@@ -105,7 +141,7 @@ const RegisterForm = () => {
         <div className="my-6 border-t border-gray-300"></div>
 
         {/* Register Options */}
-        <h2 className="text-xl font-bold text-green-900 mb-4">Register</h2>
+        <h2 className="text-xl font-bold text-green-900 mb-4">Already Registered?</h2>
         <div className="flex flex-col space-y-2">
           <ButtonToLogin />
         </div>

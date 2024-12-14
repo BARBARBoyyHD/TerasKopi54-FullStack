@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import NavbarDashboard from "../component/Navbar/NavbarDashboard";
 import SideBarMenu from "../component/Sidebar/SideBarMenu";
+import AllProduct from "../component/Product/AllProduct";
 
 const ProductListPages = () => {
   const [isMobile, setIsMobile] = useState(false);
@@ -47,30 +48,7 @@ const ProductListPages = () => {
           </div>
 
           <div className="flex flex-col justify-center">
-            <div className="w-auto  flex flex-wrap justify-center gap-3">
-              <div className="text-white w-[300px] h-[200px] rounded-md border border-red-600 flex justify-center items-center">
-                Revenue
-              </div>
-              <div className="text-white w-[300px] h-[200px] rounded-md border border-red-600 flex justify-center items-center">
-                ItemSold
-              </div>
-              <div className="text-white w-[300px] h-[200px] rounded-md border border-red-600 flex justify-center items-center">
-                ABS
-              </div>
-            </div>
-            <div className="w-auto  flex flex-wrap justify-center gap-3 mt-2">
-              <div className="text-white w-[615px] h-[300px] border rounded-md border-red-600 flex justify-center items-center">
-                Chart Monthly
-              </div>
-              <div className="text-white w-[300px] h-[300px] rounded-md border border-red-600 flex justify-center items-center">
-                Top Product
-              </div>
-            </div>
-            <div className="w-auto flex flex-wrap justify-center gap-3 mt-2">
-              <div className="text-white w-[930px] h-[600px] rounded-md border border-red-600 flex justify-center items-center">
-                Order Details
-              </div>
-            </div>
+            <AllProduct/>
           </div>
         </div>
       </main>

@@ -1,26 +1,50 @@
-import React from "react";
+import React,{useState,useEffect} from "react";
 import NavbarDashboard from "../component/Navbar/NavbarDashboard";
 import SideBarMenu from "../component/Sidebar/SideBarMenu";
+import MenuLayout from "../component/Menu/MenuLayout";
+import CafeBranchComponent from "../component/CafeBranch/CafeBranchComponent";
 const CafeBranchPages = () => {
+  const [isMobile, setIsMobile] = useState(false);
+
+  const handleResize = () => {
+    // Check if the window width is less than the breakpoint for mobile (e.g., 768px)
+    setIsMobile(window.innerWidth < 768);
+  };
+
+  useEffect(() => {
+    // Add event listener on component mount
+    window.addEventListener("resize", handleResize);
+    handleResize(); // Call once on mount to set initial state
+
+    return () => {
+      // Clean up event listener on component unmount
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
   return (
-    <div className="min-h-screen w-[auto]bg-zinc-100fl ex flex-col ">
+    <div className="min-h-screen w-full flex flex-col ">
       {/* Header with Navbar */}
-      <header className="bg-transparent">
+      <header className="bg-transparent fixed top-0 w-full z-10">
         <NavbarDashboard />
       </header>
 
       {/* Main Content */}
-      <main className="mt-[73px] min-h-screen flex flex-row ">
-        <div className="border border-black">
-          <SideBarMenu />
-        </div>
-        <div className="bg-white shadow-md rounded-lg">
-          <h1 className="text-2xl font-bold text-gray-800">
-            Welcome to Cafe Branch
-          </h1>
-          <p className="mt-4 text-gray-600">
-            Your dashboard content goes here. Customize it to your needs!
-          </p>
+      <main className="mt-[65px]  flex flex-row gap-2">
+        {/* Sidebar - Conditionally Rendered */}
+        {!isMobile && (
+          <div className="w-[4%] ">
+            <SideBarMenu />
+          </div>
+        )}
+
+        {/* Dashboard Content */}
+        <div className="w-full max-w-screen-lg min-h-screen shadow-md rounded-lg p-4  bg-black  md:ml-0 md:mx-auto">
+          <h1 className="text-white">This is Menu</h1>
+          <div>
+            <MenuLayout />
+            <CafeBranchComponent/>
+          </div>
         </div>
       </main>
     </div>
