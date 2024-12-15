@@ -23,7 +23,6 @@ const LoginForm = () => {
         { withCredentials: true } // Configuration for cookies
       )
       .then((response) => {
-        console.log("Login success", response.data);
         if(response.status !== 200){
           navigate("/pages/login");
           return

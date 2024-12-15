@@ -1,34 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
+import DashboardPanel from "../component/Dasbboard/DashboardPanel";
 import NavbarDashboard from "../component/Navbar/NavbarDashboard";
 import SideBarMenu from "../component/Sidebar/SideBarMenu";
-import DashboardPanel from "../component/Dasbboard/DashboardPanel";
-import AuthUser from "../component/AuthUser/AuthUser";
-import axios from "axios";
-import { useNavigate } from "react-router-dom";
 const Dashboard = () => {
   const [isMobile, setIsMobile] = useState(false);
-  const [error, setError] = useState("");
-  const [message, setMessage] = useState("");
-  const navigate = useNavigate();
-
-  const ProtectedRoutes = () => {
-    // Retrieve tokens from cookies using js-cookie
-    const accessToken = Cookies.get("accessToken");
-    const refreshToken = Cookies.get("refreshToken");
-    const csrfToken = Cookies.get("CSRF-TOKEN");
-  
-    // Check if user is authenticated based on access token
-    console.log("accessToken:", accessToken);
-    console.log("refreshToken:", refreshToken);
-    console.log("csrfToken:", csrfToken);
-    if (!accessToken) {
-      return <Navigate to="/" />;
-    }
-   
-  
-    return <Outlet />;
-  };
-
 
   const handleResize = () => {
     // Check if the window width is less than the breakpoint for mobile (e.g., 768px)
@@ -48,7 +23,6 @@ const Dashboard = () => {
   return (
     <div className="min-h-screen w-full flex flex-col ">
       {/* Header with Navbar */}
-      <AuthUser/>
       <header className="bg-transparent fixed top-0 w-full z-10">
         <NavbarDashboard />
       </header>

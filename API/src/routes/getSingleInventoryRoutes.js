@@ -1,7 +1,7 @@
 const express =  require("express")
 const Routes = express.Router()
-const getSingleProductsController = require("../controller/getSingleProductsController")
+const getSingleInventoryController = require("../controller/getSingleInventoryController")
 
-Routes.get("/api/item/inventory/:id",getSingleProductsController.getSingle)
+Routes.get("/api/item/inventory/:id",getSingleInventoryController.getSingle)
 
 module.exports = Routes

@@ -1,7 +1,7 @@
 const db = require("../../db");
 exports.getAll = async (req, res) => {
   try {
-    const [results] = await db.query("SELECT * FROM inventory ORDER BY AddedAt DESC");
+    const [results] = await db.query("SELECT * FROM inventory ORDER BY item_id DESC");
     res.status(200).json({
       type: "success",
       data: results,

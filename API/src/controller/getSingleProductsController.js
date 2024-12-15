@@ -1,5 +1,4 @@
 const db = require("../../db");
-const fb = require("../../db");
 
 exports.getSingle = async (req, res) => {
   try {

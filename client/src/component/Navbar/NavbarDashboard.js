@@ -3,6 +3,7 @@ import Logo from "../../asset/Teraskopilogo.png";
 import { FaCartArrowDown, FaBars } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import SideBarMobile from "../Sidebar/SideBarMobile";
+import { useSelector } from "react-redux";
 
 const NavbarDashboard = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -23,16 +24,22 @@ const NavbarDashboard = () => {
     setIsMobile(window.innerWidth < 768);
   };
 
+  const cartItems = useSelector((state) => state.addToCart.cartItems);
+  const totalQuantity = cartItems.reduce(
+    (total, item) => total + item.quantity,
+    0
+  ); // Calculate total quantity from cart items
+
   useEffect(() => {
     window.addEventListener("resize", handleMobile);
     handleMobile();
     return () => {
-      window.addEventListener("resize", handleMobile);
+      window.removeEventListener("resize", handleMobile);
     };
   }, []);
 
   return (
-    <nav className="fixed top-0 left-0 w-full bg-[#272525]   ">
+    <nav className="fixed top-0 left-0 w-full bg-[#272525]">
       <div className="max-w-7xl mx-auto flex justify-between items-center px-4 sm:px-6 py-3">
         {isMobile && (
           <button
@@ -53,16 +60,19 @@ const NavbarDashboard = () => {
           <img src={Logo} alt="Teras Kopi Logo" className="h-12 w-auto" />
         </button>
 
-        {/* Sidebar Toggle */}
-
         {/* Cart Icon */}
-        <button
-          className="text-white hover:text-green-500 focus:outline-none focus:ring-2 focus:ring-green-300"
-          aria-label="Cart"
-          onClick={handleToCart}
-        >
-          <FaCartArrowDown size={24} />
-        </button>
+        <div className="flex gap-2">
+          <button
+            className="text-white hover:text-green-500 focus:outline-none focus:ring-2 focus:ring-green-300"
+            aria-label="Cart"
+            onClick={handleToCart}
+          >
+            <FaCartArrowDown size={30} />
+          </button>
+          <span className="border border-yellow-400 rounded-[50%] w-[20px] h-[20px] flex justify-center items-center bg-yellow-400 font-bold text-black text-[10px]">
+            {totalQuantity}
+          </span>
+        </div>
       </div>
 
       {/* Mobile Sidebar */}

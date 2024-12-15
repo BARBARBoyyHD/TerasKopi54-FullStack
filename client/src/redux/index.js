@@ -1,6 +1,11 @@
 export { LogoutUser } from "./Logout/LogoutActions";
 export { getProducts } from "./Product/GET/GetProductActions";
 export { RegisterUser } from "./Register/RegisterActions";
-export { addToCart } from "./Cart/POST/CartActions";
 export { getInventory } from "./Inventory/GET/InventoryActions";
 export { getCafeBranch } from "./CafeBranch/GET/CafeBranchActions";
+export { addToCart } from "./Cart/ADDTOCART/cartActions";
+export { countCartItems } from "./Cart/COUNT/cartCountActions";
+export { postInventory } from "./Inventory/POST/inventoryPostActions";
+export {deleteInventory} from "./Inventory/DELETE/inventoryDActions";
+export {putInventory} from "./Inventory/PUT/inventoryEditActions";
+export {getSingleInventory} from "./Inventory/SINGLE/SingleInventoryActions";

@@ -3,12 +3,17 @@ import { useDispatch, useSelector } from "react-redux";
 import { getInventory } from "../../redux";
 import { RiPencilFill } from "react-icons/ri";
 import { MdDelete } from "react-icons/md";
-
+import AddItemModalForm from "../Modal/AddItemModalForm";
+import axios from "axios";
+import ButtonDeleteInventory from "../Button/ButtonDeleteInventory";
+import EditItemModalForm from "../Modal/EditItemModalForm";
 const AllInventoryComponent = () => {
   const dispatch = useDispatch();
-  const { loading, data: inventory, error } = useSelector(
-    (state) => state.getInventory
-  );
+  const {
+    loading,
+    data: inventory,
+    error,
+  } = useSelector((state) => state.getInventory);
 
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
@@ -37,17 +42,12 @@ const AllInventoryComponent = () => {
     // Add your edit logic here
   };
 
-  const handleDelete = (id) => {
-    console.log("Delete item with ID:", id);
-    // Add your delete logic here
-  };
-
   return (
     <div className="p-4">
       <h1 className="text-2xl font-bold mb-4">Inventory Management</h1>
 
       {/* Search Bar */}
-      <div className="mb-4">
+      <div className="mb-4 flex gap-2">
         <input
           type="text"
           placeholder="Search by name"
@@ -55,6 +55,7 @@ const AllInventoryComponent = () => {
           onChange={(e) => setSearchTerm(e.target.value)}
           className="border rounded-lg p-2 w-full"
         />
+        <AddItemModalForm />
       </div>
 
       {/* Table */}
@@ -66,6 +67,8 @@ const AllInventoryComponent = () => {
               <th className="px-4 py-2 border-b">Item Name</th>
               <th className="px-4 py-2 border-b">Quantity</th>
               <th className="px-4 py-2 border-b">Price</th>
+              <th className="px-4 py-2 border-b">Added</th>
+              <th className="px-4 py-2 border-b">Updated</th>
               <th className="px-4 py-2 border-b">Actions</th>
             </tr>
           </thead>
@@ -99,19 +102,11 @@ const AllInventoryComponent = () => {
                   <td className="px-4 py-2">{item.item_name}</td>
                   <td className="px-4 py-2">{item.quantity}</td>
                   <td className="px-4 py-2">Rp {item.price_per_pcs}</td>
+                  <td className="px-4 py-2">{item.AddedAt}</td>
+                  <td className="px-4 py-2">{item.UpdatedAt}</td>
                   <td className="px-4 py-2 flex gap-2 justify-center">
-                    <button
-                      onClick={() => handleEdit(item.item_id)}
-                      className="text-blue-500 hover:text-blue-700"
-                    >
-                      <RiPencilFill />
-                    </button>
-                    <button
-                      onClick={() => handleDelete(item.item_id)}
-                      className="text-red-500 hover:text-red-700"
-                    >
-                      <MdDelete />
-                    </button>
+                    <EditItemModalForm itemId={item.item_id} />
+                    <ButtonDeleteInventory itemId={item.item_id} />
                   </td>
                 </tr>
               ))}

@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import AlertPractice from "../component/practice/AlertPractice";
-import NavbarPractice from "../component/practice/NavbarPractice";
-import ModalPractice from "../component/practice/ModalPractice";
 import AlertSuccesPractice from "../component/practice/AlertSuccesPractice";
+import ModalPractice from "../component/practice/ModalPractice";
+import NavbarPractice from "../component/practice/NavbarPractice";
 
 const Practice = () => {
   const [isAlertOpen, setIsAlertOpen] = useState(false);
@@ -19,6 +19,7 @@ const Practice = () => {
 
   return (
     <div className="min-h-screen bg-lime-300">
+
       <header>
         <NavbarPractice />
       </header>

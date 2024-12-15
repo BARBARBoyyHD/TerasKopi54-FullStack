@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { FiSearch } from "react-icons/fi";
 import { useDispatch, useSelector } from "react-redux";
-import { getProducts, addToCart } from "../../redux"; // Import your action creator
+import { getProducts, addToCart } from "../../redux"; // Import your action creators
 import { FaPlus, FaMinus } from "react-icons/fa";
+import LoadingSpinner from "../Loading/LoadingSpinner";
 
 const MenuLayout = () => {
   const dispatch = useDispatch();
@@ -16,25 +17,27 @@ const MenuLayout = () => {
     dispatch(getProducts());
   }, [dispatch]);
 
+  // Handle adding a product to the cart
   const handleAddToCart = (product) => {
-    const quantity = quantities[product.product_id] || 1; // Default to 1 if no quantity is set
-    const totalPrice = product.price * quantity;
-    const updatedProduct = { ...product, quantity, totalPrice };
-    dispatch(addToCart(updatedProduct)); // Dispatch the product with total price to the cart
+    const productWithQuantity = {
+      ...product,
+      quantity: quantities[product.product_id] || 1, // Use selected quantity or default to 1
+    };
+    dispatch(addToCart(productWithQuantity)); // Add to cart action
   };
 
-  const handleIncrement = (productId) => {
-    setQuantities((prevQuantities) => ({
-      ...prevQuantities,
-      [productId]: (prevQuantities[productId] || 1) + 1, // Increment the quantity for this specific product
-    }));
-  };
+  // Handle quantity change (increment or decrement)
+  const handleQuantityChange = (product, action) => {
+    setQuantities((prevQuantities) => {
+      const newQuantity = prevQuantities[product.product_id] || 1;
 
-  const handleDecrement = (productId) => {
-    setQuantities((prevQuantities) => ({
-      ...prevQuantities,
-      [productId]: Math.max(1, (prevQuantities[productId] || 1) - 1), // Decrement with a minimum value of 1
-    }));
+      if (action === "increment") {
+        return { ...prevQuantities, [product.product_id]: newQuantity + 1 };
+      } else if (action === "decrement" && newQuantity > 1) {
+        return { ...prevQuantities, [product.product_id]: newQuantity - 1 };
+      }
+      return prevQuantities;
+    });
   };
 
   // Filter products based on the search term
@@ -63,7 +66,7 @@ const MenuLayout = () => {
       {/* Product Cards */}
       <div className="flex flex-wrap gap-3 justify-center">
         {/* Loading State */}
-        {loading && <p>Loading...</p>}
+        {loading && <LoadingSpinner />}
 
         {/* Error State */}
         {error && <p className="text-red-500">Error: {error}</p>}
@@ -84,11 +87,17 @@ const MenuLayout = () => {
                 className="w-[300px] h-[350px] border rounded-md bg-white flex flex-col items-center justify-start p-4 shadow-sm"
               >
                 <img
-                  src={`http://localhost:5000/${product.image_url}`} // Assuming the images are served from this path
-                  alt={product.product_name}
+                  src={
+                    product.image_url
+                      ? `http://localhost:5000/${product.image_url}`
+                      : "/path/to/fallback-image.jpg"
+                  }
+                  alt={product.product_name || "Product image"}
                   className="w-full h-[200px] object-cover rounded-md"
                 />
-                <h3 className="text-lg font-bold mt-2">{product.product_name}</h3>
+                <h3 className="text-lg font-bold mt-2">
+                  {product.product_name}
+                </h3>
                 <p className="text-sm text-gray-500">
                   Category: {product.product_category}
                 </p>
@@ -99,14 +108,14 @@ const MenuLayout = () => {
                   {/* Increment/Decrement Buttons */}
                   <div className="flex justify-center items-center gap-2">
                     <button
-                      onClick={() => handleDecrement(product.product_id)}
+                      onClick={() => handleQuantityChange(product, "decrement")}
                       className="p-2 bg-gray-200 rounded-md"
                     >
                       <FaMinus />
                     </button>
                     <span>{productQuantity}</span>
                     <button
-                      onClick={() => handleIncrement(product.product_id)}
+                      onClick={() => handleQuantityChange(product, "increment")}
                       className="p-2 bg-gray-200 rounded-md"
                     >
                       <FaPlus />

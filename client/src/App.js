@@ -12,27 +12,34 @@ import ProductListPages from "./pages/ProductListPages";
 import RegisterUserPages from "./pages/RegisterUserPages";
 import UserProfilePages from "./pages/UserProfilePages";
 import store from "./redux/store";
-
+import ProtectedRoutes from "./utils/ProtectedRoutes";
+import { lazy, Suspense } from "react";
 function App() {
   return (
     <Provider store={store}>
-        <Router>
-          <Routes>
-            <Route exact path="/" element={<HomePage />} />
-            <Route path="/pages/login"element={<LoginPages/>}/>
-            <Route path="/pages/Dashboard" element={<Dashboard/>}/>
-            <Route path="/pages/Register/user" element={<RegisterUserPages/>}/>
-            <Route path="/pages/Practice"element={<Practice/>}/>
-            <Route path="/pages/Product/list"element={<ProductListPages/>}/>
-            <Route path="/pages/Menu"element={<MenuPages/>}/>
-            <Route path="/pages/Inventory"element={<InventeroyPages/>}/>
-            <Route path="/pages/Cart"element={<CartPages/>}/>
-            <Route path="/pages/Cafe/Branch"element={<CafeBranchPages/>}/>
-            <Route path="/pages/user/profile" element={<UserProfilePages/>}/>
-          </Routes>
-    </Router>
+      <Router>
+        <Routes>
+          <Route exact path="/" element={<HomePage />} />
+          <Route path="/pages/login" element={<LoginPages />} />
+
+          <Route element={<ProtectedRoutes />}>
+            <Route path="/pages/Dashboard" element={<Dashboard />} />
+            <Route
+              path="/pages/Register/user"
+              element={<RegisterUserPages />}
+            />
+            <Route path="/pages/Practice" element={<Practice />} />
+            <Route path="/pages/Product/list" element={<ProductListPages />} />
+            <Route path="/pages/Menu" element={<MenuPages />} />
+            <Route path="/pages/Inventory" element={<InventeroyPages />} />
+
+            <Route path="/pages/Cafe/Branch" element={<CafeBranchPages />} />
+            <Route path="/pages/user/profile" element={<UserProfilePages />} />
+            <Route path="/pages/Cart" element={<CartPages />} />
+          </Route>
+        </Routes>
+      </Router>
     </Provider>
-    
   );
 }
 

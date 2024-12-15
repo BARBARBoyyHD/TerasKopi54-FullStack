@@ -2,50 +2,46 @@ const db = require("../../db");
 const moment = require("moment");
 
 exports.add = async (req, res) => {
-  const { cart_session_id, customer_name, payment_method } = req.body;
+  const { customer_name, payment_method, total_price, cartItems } = req.body;
 
   // Validate inputs
-  if (!cart_session_id || !customer_name || !payment_method) {
-    return res.status(400).json({ message: "Missing required fields" });
+  if (
+    !customer_name ||
+    !payment_method ||
+    !cartItems ||
+    cartItems.length === 0
+  ) {
+    return res
+      .status(400)
+      .json({ message: "Missing required fields or empty cart" });
   }
+
   // Standardized date format
-  const orderDate = moment().format('LL');
+  const orderDate = moment().format("YYYY-MM-DD HH:mm:ss");
   const connection = await db.getConnection();
 
   try {
     await connection.beginTransaction();
 
-    // Fetch all cart items for the session
-    const [cartItems] = await connection.query(
-      `SELECT * FROM cart WHERE cart_session_id = ?`,
-      [cart_session_id]
-    );
-
-    if (cartItems.length === 0) {
-      return res.status(400).json({ message: "Cart is empty" });
-    }
-
-    // Insert cart items into the orders table
+    // Insert orders into the database
     const insertPromises = cartItems.map((item) =>
       connection.query(
         `INSERT INTO orders (
-          cart_session_id, 
           product_id, 
           product_name, 
-          quantity, 
+          quantity_order, 
           price, 
           total_price, 
           payment_method, 
           customer_name, 
           order_date
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
         [
-          item.cart_session_id,
           item.product_id,
           item.product_name,
           item.quantity,
           item.price,
-          item.total_price,
+          total_price,
           payment_method,
           customer_name,
           orderDate,
@@ -55,11 +51,7 @@ exports.add = async (req, res) => {
 
     await Promise.all(insertPromises);
 
-    // Clear the cart after checkout
-    await connection.query(`DELETE FROM cart WHERE cart_session_id = ?`, [
-      cart_session_id,
-    ]);
-
+    // Commit transaction
     await connection.commit();
     res.status(201).json({ message: "Order placed successfully" });
   } catch (error) {

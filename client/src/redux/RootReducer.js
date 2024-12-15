@@ -1,18 +1,28 @@
-import {combineReducers} from "redux";
-import LogoutUserReducer from "./Logout/LogoutReducer";
-import getProductsReducer from "./Product/GET/GetProductReducer"
-import registerReducer from "./Register/RegisterReducer"
-import addToCartReducer from "./Cart/POST/CartReducer"
-import InventoryReducer from "./Inventory/GET/InventoryReducer"
+import { combineReducers } from "redux";
 import getCafeBranchReducer from "./CafeBranch/GET/CafeBranchReducer";
+import cartReducer from "./Cart/ADDTOCART/cartReducer";
+import InventoryReducer from "./Inventory/GET/InventoryReducer";
+import LogoutUserReducer from "./Logout/LogoutReducer";
+import getProductsReducer from "./Product/GET/GetProductReducer";
+import registerReducer from "./Register/RegisterReducer";
+import cartCountReducer from "./Cart/COUNT/cartCountReducer";
+import inventoryPostReducer from "./Inventory/POST/inventoryPostReducer";
+import inventoryDeleteReducer from "./Inventory/DELETE/inventoryDReducer";
+import inventoryPutReducer from "./Inventory/PUT/inventoryEditReducer";
+import singleInventoryReducer from "./Inventory/SINGLE/SingleInventoryReducer";
 
 const rootReducer = combineReducers({
-    LogoutUser : LogoutUserReducer,
-    getProducts : getProductsReducer,
-    register : registerReducer,
-    addToCart : addToCartReducer,
-    getInventory : InventoryReducer,
-    getCafeBranch : getCafeBranchReducer
-})
+  LogoutUser: LogoutUserReducer,
+  getProducts: getProductsReducer,
+  register: registerReducer,
+  getInventory: InventoryReducer,
+  getCafeBranch: getCafeBranchReducer,
+  addToCart: cartReducer,
+  countCartItems: cartCountReducer,
+  postInventory: inventoryPostReducer,
+  deleteInventory: inventoryDeleteReducer,
+  putInventory: inventoryPutReducer,
+  getSingleInventory:singleInventoryReducer
+});
 
-export default rootReducer
+export default rootReducer;

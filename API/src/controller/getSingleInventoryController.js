@@ -10,6 +10,7 @@ exports.getSingle = async (req, res) => {
     }
 
     const sql = "SELECT * FROM inventory WHERE item_id = ?";
+
     const [result] = await db.query(sql, [id]);
 
     if (result.length === 0) {

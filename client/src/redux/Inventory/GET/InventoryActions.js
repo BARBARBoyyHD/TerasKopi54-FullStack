@@ -21,7 +21,7 @@ const getInventoryError = (error)=>{
     }
 }
 
-export const getInventory = () => {
+export const getInventory = (navigate) => {
     return (dispatch) => {
       dispatch(getInventoryRequest());
       axios
@@ -29,10 +29,11 @@ export const getInventory = () => {
         .then((response) => {
           // Extract the 'data' property from the API response
           dispatch(getInventorySuccess(response.data.data));
-          console.log(response.data.data);
+          
         })
         .catch((error) => {
           dispatch(getInventoryError(error.message));
+          navigate("/")
         });
     }
 }

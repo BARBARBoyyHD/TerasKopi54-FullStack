@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-const AuthUser = () => {
-  const [error, setError] = useState("");
-  const [message, setMessage] = useState("");
+const AuthUser = ({ setAuthData }) => {
   const navigate = useNavigate();
 
   const handleAuth = async () => {
@@ -13,15 +11,18 @@ const AuthUser = () => {
         credentials: "include", // Ensure cookies are included
       });
 
-      if (!res.ok) {
-        // Navigate to the home page if the response is not ok
-        navigate("/");
-        return;
-      }
+      const data = await res.json();
 
+      if (res.ok) {
+        console.log("Authenticated User Data:", data);
+        setAuthData(data); // Pass data up to parent
+      } else {
+        console.log("Authentication Failed:", data);
+        navigate("/"); // Redirect on failure
+      }
     } catch (error) {
-      setError(error.message); // Set the error message for display
-      console.error("Error:", error.message);
+      console.error("Error Fetching Data:", error.message);
+      navigate("/"); // Redirect on error
     }
   };
 
@@ -29,11 +30,7 @@ const AuthUser = () => {
     handleAuth();
   }, []);
 
-  return (
-    <div>
-     
-    </div>
-  );
+  return null; // No UI needed for this component
 };
 
 export default AuthUser;
