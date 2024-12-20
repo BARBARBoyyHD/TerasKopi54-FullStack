@@ -8,12 +8,12 @@ const sumAllProduct = (io) => {
     const sendSumProduct = async () => {
       try {
         const sql =
-          "SELECT product_id, product_name, SUM(quantity_order) AS total_quantity_sold FROM orders GROUP BY product_id, product_name ORDER BY total_quantity_sold DESC LIMIT 3";
+          "SELECT product_id, product_name, SUM(total_price) AS total_quantity_sold FROM orders GROUP BY product_id, product_name ORDER BY total_quantity_sold DESC LIMIT 3";
         const [result] = await db.query(sql);
 
         // Send updated totals to all clients
         io.emit("SumAllProduct", result);
-        console.log("Updated product totals:", result);
+        console.log(result);
       } catch (error) {
         console.error("Database query failed:", error.message);
         io.emit("Error", "Failed to fetch product totals");

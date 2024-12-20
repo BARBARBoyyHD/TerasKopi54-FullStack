@@ -1,16 +1,37 @@
-const db = require("../../db")
+const jwt = require('jsonwebtoken');
 
-const validateRole = (role)=>{
-    return(req,res,next)=>{
-        const userRole = req.cookies["Role"]
-        if(role.includes(userRole)){
-            next()
+const validateRole = (roles) => {
+    return (req, res, next) => {
+        const token = req.cookies?.accessToken;
+        
+        if (!token) {
+            console.error("No token provided");
+            return res.status(401).json({ message: "No token provided" });
         }
-        else{
-            return res.status(401).json({
-                message:"you dont have permission"
-            })
+        
+        try {
+            // Verify and decode the token
+            const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
+
+            // Log decoded token for debugging
+            console.log("Decoded Token:", decoded);
+
+            // Attach the decoded data to req.user
+            req.user = decoded;
+
+            // Check if the user's role is included in the allowed roles
+            if (roles.includes(req.user.role)) {
+                // Proceed to the next middleware
+                return next();
+            } else {
+                console.error("Insufficient permissions");
+                return res.status(403).json({ message: "Forbidden" });
+            }
+        } catch (error) {
+            console.error("Auth Middleware Error:", error.message);
+            return res.status(401).json({ message: "Invalid token" });
         }
-    }
-}
-module.exports = validateRole
+    };
+};
+
+module.exports = validateRole;

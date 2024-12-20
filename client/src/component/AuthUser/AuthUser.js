@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 const AuthUser = ({ setAuthData }) => {
@@ -9,16 +9,17 @@ const AuthUser = ({ setAuthData }) => {
       const res = await fetch("http://localhost:5000/api/auth/user", {
         method: "GET",
         credentials: "include", // Ensure cookies are included
+        headers: { "Content-Type": "application/json" },
       });
 
       const data = await res.json();
 
       if (res.ok) {
         console.log("Authenticated User Data:", data);
-        setAuthData(data); // Pass data up to parent
+        setAuthData(data); // Update parent state with authenticated user data
       } else {
-        console.log("Authentication Failed:", data);
-        navigate("/"); // Redirect on failure
+        console.error("Authentication Failed:", data.message || data);
+        navigate("/"); // Redirect to login page on failure
       }
     } catch (error) {
       console.error("Error Fetching Data:", error.message);
@@ -28,9 +29,9 @@ const AuthUser = ({ setAuthData }) => {
 
   useEffect(() => {
     handleAuth();
-  }, []);
+  }, [setAuthData]);
 
-  return null; // No UI needed for this component
+  return <p>Loading...</p>; // Optional: Add a loading indicator
 };
 
 export default AuthUser;

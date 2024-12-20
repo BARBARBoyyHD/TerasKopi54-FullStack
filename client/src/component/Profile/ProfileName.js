@@ -6,6 +6,9 @@ const ProfileName = () => {
   const handleToProfile = () => {
     navigate("/pages/user/profile");
   };
+
+  
+
   return (
     <button onClick={handleToProfile} className="flex flex-col">
       <h1 className="text-[20px] font-bold">Uwi</h1>

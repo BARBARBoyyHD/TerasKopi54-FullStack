@@ -9,18 +9,20 @@ const generateCSRF = () => {
 };
 
 const generateAccessToken = (user) => {
-  return jwt.sign(
-    { id: user.id, username: user.username },
+  const token = jwt.sign(
+    { id: user.user_id, username: user.username, role: user.role },
     process.env.ACCESS_TOKEN_SECRET,
     {
       expiresIn: "15m",
     }
   );
+  console.log("Generated Access Token:", jwt.decode(token)); // Decode and log the token
+  return token;
 };
 
 const generateRefreshToken = (user) => {
   return jwt.sign(
-    { id: user.id, username: user.username },
+    { id: user.user_id, username: user.username, role: user.role },
     process.env.REFRESH_TOKEN_SECRET,
     {
       expiresIn: "7d",
@@ -34,7 +36,7 @@ exports.login = async (req, res) => {
 
     // Find the user by username
     const [results] = await db.query(
-      "SELECT * FROM users WHERE username = ?",
+      "SELECT user_id, username, password_hash, role FROM users WHERE username = ?",
       [username]
     );
 
@@ -58,50 +60,38 @@ exports.login = async (req, res) => {
     const CSRF = generateCSRF();
 
     // Store refresh token in the database
-    await db.query(
-      "UPDATE users SET refreshToken = ? WHERE user_id = ?",
-      [refreshToken, userData.user_id]
-    );
+    await db.query("UPDATE users SET refreshToken = ? WHERE user_id = ?", [
+      refreshToken,
+      userData.user_id,
+    ]);
 
-    // Set cookies
+    // Set cookies (exclude role)
     res
       .cookie("accessToken", accessToken, {
         httpOnly: true,
-        maxAge: 60 * 60 * 1000, // 15 minutes in milliseconds
+        maxAge: 15 * 60 * 1000, // 15 minutes
         secure: process.env.NODE_ENV === "production",
         sameSite: "strict",
       })
       .cookie("refreshToken", refreshToken, {
         httpOnly: true,
-        maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days in milliseconds
+        maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
         secure: process.env.NODE_ENV === "production",
         sameSite: "strict",
       })
       .cookie("CSRF-TOKEN", CSRF, {
         httpOnly: true,
-        maxAge: 60 * 60 * 1000, // 1 hour in milliseconds
-        secure: process.env.NODE_ENV === "production",
-        sameSite: "strict",
-      }) 
-      .cookie("USERNAME", userData.username, {
-        httpOnly: true,
-        maxAge: 60 * 60 * 1000, // 1 hour in milliseconds
-        secure: process.env.NODE_ENV === "production",
-        sameSite: "strict",
-      })
-      .cookie("Role", userData.role, {
-        httpOnly: true,
-        maxAge: 60 * 60 * 1000, // 1 hour in milliseconds
+        maxAge: 60 * 60 * 1000, // 1 hour
         secure: process.env.NODE_ENV === "production",
         sameSite: "strict",
       });
 
-    // Send response
+    // Send response (include role in response, not in cookies)
     return res.status(200).json({
       message: "Login successful",
       userId: userData.user_id,
       username: userData.username,
-      role : userData.role
+      role: userData.role,
     });
   } catch (error) {
     console.error(error.message);

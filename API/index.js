@@ -143,6 +143,8 @@ app.get("/api/all/orders", authRole(["Admin","Manager"]),authUser,refreshToken,c
 
 // cart
 
+app.get("/api/user/profile",authUser,refreshToken,csrfValidate,require("./src/routes/getUserProfileRoutes"))
+
 app.get("/api/cart/item",require("./src/routes/getCartRoutes"))
 app.post("/api/add/to/cart",require("./src/routes/addToCartRoutes"))
 
@@ -151,13 +153,13 @@ app.get("/api/user/logout",refreshToken,csrfValidate,require("./src/routes/userL
 app.get("/api/auth/user",authUser,refreshToken,csrfValidate,(req,res)=>{
   res.json({
     message:"Access Passed",
-    user_role : req.cookies["Role"]
+    user_role : req.user.role
   })
 })
 
 app.get("/api/auth/dashboard",authRole(["Admin","Manager"]),authUser,refreshToken,csrfValidate,(req,res)=>{
   res.json({
-    user_role : req.cookies["Role"]
+    user_role : req.user.role
   })
 })
 

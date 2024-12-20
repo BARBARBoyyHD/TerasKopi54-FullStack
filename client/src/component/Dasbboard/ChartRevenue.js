@@ -1,11 +1,20 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import io from "socket.io-client";
+const socket = io("http://localhost:8080");
 
 const ChartRevenue = () => {
+  const [getRevenue, setGetRevenue] = useState(0);
+  useEffect(() => {
+    socket.on("SumTotalRevenue", (data) => {
+      setGetRevenue(data.Revenue);
+    });
+    return () => {
+      socket.off("SumTotalRevenue");
+    };
+  }, [socket]);
   return (
-    <div className="flex flex-row mt-2">
-      <div className="w-[650px] h-[300px] border border-black flex justify-center items-center">
-        This is Chart
-      </div>
+    <div>
+      <h1 className="text-[40px]">Rp {getRevenue.toLocaleString("id-ID")}</h1>
     </div>
   );
 };
