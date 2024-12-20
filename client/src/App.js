@@ -14,6 +14,7 @@ import UserProfilePages from "./pages/UserProfilePages";
 import store from "./redux/store";
 import ProtectedRoutes from "./utils/ProtectedRoutes";
 import AuthDashboard from "./utils/AuthDashboard";
+import TryingSocket from "./pages/TryingSocket";
 
 function App() {
   return (
@@ -41,7 +42,9 @@ function App() {
             <Route path="/pages/user/profile" element={<UserProfilePages />} />
             <Route path="/pages/Cart" element={<CartPages />} />
           </Route>
+          <Route path="/pages/socket" element={<TryingSocket />} />
         </Routes>
+        
       </Router>
     </Provider>
   );
