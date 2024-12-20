@@ -82,7 +82,14 @@ exports.login = async (req, res) => {
         maxAge: 60 * 60 * 1000, // 1 hour in milliseconds
         secure: process.env.NODE_ENV === "production",
         sameSite: "strict",
-      }) .cookie("USERNAME", userData.username, {
+      }) 
+      .cookie("USERNAME", userData.username, {
+        httpOnly: true,
+        maxAge: 60 * 60 * 1000, // 1 hour in milliseconds
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "strict",
+      })
+      .cookie("Role", userData.role, {
         httpOnly: true,
         maxAge: 60 * 60 * 1000, // 1 hour in milliseconds
         secure: process.env.NODE_ENV === "production",
@@ -94,6 +101,7 @@ exports.login = async (req, res) => {
       message: "Login successful",
       userId: userData.user_id,
       username: userData.username,
+      role : userData.role
     });
   } catch (error) {
     console.error(error.message);

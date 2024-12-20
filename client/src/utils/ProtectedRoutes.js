@@ -14,6 +14,7 @@ const ProtectedRoutes = () => {
       });
       if (res.ok) {
         const data = await res.json();
+        console.log(data);
         if (data.message === "Access Passed") {
           setIsAuthenticated(true);
         } else {
@@ -40,7 +41,7 @@ const ProtectedRoutes = () => {
           isAuthenticated === null ? "opacity-100" : "opacity-0"
         }`}
       >
-        {isAuthenticated === null && <LoadingSpinner />}
+        {isAuthenticated === null && <div className="flex justify-center items-center min-h-screen bg-black"><LoadingSpinner /></div>}
       </div>
     );
   }

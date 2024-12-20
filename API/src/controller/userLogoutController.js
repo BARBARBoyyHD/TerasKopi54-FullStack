@@ -16,6 +16,16 @@ exports.logout = (req, res) => {
         secure: true,
         sameSite: "strict",
       })
+      .clearCookie("USERNAME", {
+        httpOnly: true,
+        secure: true,
+        sameSite: "strict",
+      })
+      .clearCookie("Role", {
+        httpOnly: true,
+        secure: true,
+        sameSite: "strict",
+      })
     .json({
       message: "Logout Success",
     });

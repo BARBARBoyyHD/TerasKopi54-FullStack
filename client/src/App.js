@@ -13,7 +13,8 @@ import RegisterUserPages from "./pages/RegisterUserPages";
 import UserProfilePages from "./pages/UserProfilePages";
 import store from "./redux/store";
 import ProtectedRoutes from "./utils/ProtectedRoutes";
-import { lazy, Suspense } from "react";
+import AuthDashboard from "./utils/AuthDashboard";
+
 function App() {
   return (
     <Provider store={store}>
@@ -23,7 +24,10 @@ function App() {
           <Route path="/pages/login" element={<LoginPages />} />
 
           <Route element={<ProtectedRoutes />}>
-            <Route path="/pages/Dashboard" element={<Dashboard />} />
+            <Route element={<AuthDashboard />}>
+              <Route path="/pages/Dashboard" element={<Dashboard />} />
+            </Route>
+
             <Route
               path="/pages/Register/user"
               element={<RegisterUserPages />}

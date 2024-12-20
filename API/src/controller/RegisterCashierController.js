@@ -9,7 +9,7 @@ const generateRefreshToken = () => {
 
 exports.register = async (req, res) => {
   try {
-    const { username, password, contact } = req.body;
+    const { username, password, contact,role } = req.body;
     const refreshToken = generateRefreshToken();
     const createdAt = moment().format("LL");
 
@@ -38,7 +38,7 @@ exports.register = async (req, res) => {
 
     // Insert the new user into the database
     const query =
-      "INSERT INTO users (username, password_hash, contact,created_at,refreshToken) VALUES (?, ?, ?,?,?)";
+      "INSERT INTO users (username, password_hash, contact,created_at,refreshToken,role) VALUES (?, ?, ?,?,?,?)";
 
     // Use promise-based query
     const [results] = await db.query(query, [
@@ -47,12 +47,14 @@ exports.register = async (req, res) => {
       contact,
       createdAt,
       refreshToken,
+      role
     ]);
 
     res.status(201).json({
       message:"success",
       id: results.insertId,
       username,
+      role,
       contact,
       createdAt,
       refreshToken,

@@ -10,6 +10,7 @@ const refreshToken = require("./src/middleware/refreshTokenValidate")
 const csrfValidate = require("./src/middleware/csrfValidate")
 const rateLimit = require('express-rate-limit');
 const helmet = require('helmet');
+const authRole = require("./src/middleware/AuthRole")
 
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
@@ -76,6 +77,7 @@ app.get("/api/test",(req,res)=>{
     message:"asdasdasdas"
   })
 })
+
 // inventory section
 // get single inventory item
 app.get("/api/item/inventory/:id",authUser,refreshToken,csrfValidate,require("./src/routes/getSingleInventoryRoutes"));
@@ -84,7 +86,7 @@ app.get("/api/item/inventory/:id",authUser,refreshToken,csrfValidate,require("./
 app.get("/api/all/item/inventory",authUser,refreshToken,csrfValidate,require("./src/routes/AllInventoryItemsRoutes"));
 
 // delete item inventory
-app.delete("/api/delete/inventory/:id",authUser,refreshToken,csrfValidate,require("./src/routes/deleteInventoryRoutes"));
+app.delete("/api/delete/inventory/:id",authRole(["Admin","Manager"]),authUser,refreshToken,csrfValidate,require("./src/routes/deleteInventoryRoutes"));
 
 // edit inventory
 app.put("/api/update/inventory/:id",authUser,refreshToken,csrfValidate,require("./src/routes/updateInventoryRoutes"));
@@ -94,7 +96,7 @@ app.post("/api/add/item/inventory",authUser,refreshToken,csrfValidate,require(".
 
 //----------------------------------------------------------------------------------------
 
-// prodcut section
+// product section
 
 // get single product
 app.get("/api/products/:id", authUser,refreshToken,require("./src/routes/getSingleProductsRoutes"));
@@ -103,24 +105,24 @@ app.get("/api/products/:id", authUser,refreshToken,require("./src/routes/getSing
 app.get("/api/all/products",authUser,refreshToken,csrfValidate,require("./src/routes/getAllProductsRoute"));
 
 // delete product
-app.delete("/api/delete/product/:id",authUser,refreshToken,csrfValidate,require("./src/routes/deleteProductsRoutes"));
+app.delete("/api/delete/product/:id",authRole(["Admin","Manager"]),authUser,refreshToken,csrfValidate,require("./src/routes/deleteProductsRoutes"));
 
 // edit product
-app.put("/api/update/products/:id",upload.single("image"),authUser,refreshToken,csrfValidate,require("./src/routes/updateProductsRoutes"));
+app.put("/api/update/products/:id",upload.single("image"),authRole(["Admin","Manager"]),authUser,refreshToken,csrfValidate,require("./src/routes/updateProductsRoutes"));
 
 // Add product with image
-app.post("/api/add/product",upload.single("image"),authUser,refreshToken,csrfValidate,require("./src/routes/addProductsRoutes"));
+app.post("/api/add/product",upload.single("image"),authRole(["Admin","Manager"]),authUser,refreshToken,csrfValidate,require("./src/routes/addProductsRoutes"));
 
 // ---------------------------------------------------------------------------------------- //
 
 // edit cafe branch
-app.put("/api/update/cafe/branch/:id",authUser,refreshToken,csrfValidate,require("./src/routes/updateCafeBranchRoutes"));
+app.put("/api/update/cafe/branch/:id",authRole(["Admin","Manager"]),authUser,refreshToken,csrfValidate,require("./src/routes/updateCafeBranchRoutes"));
 
 // delete cafe branch
-app.delete("/api/delete/cafe/branch/:id",authUser,refreshToken,csrfValidate,require("./src/routes/deleteCafeBranchRoutes"));
+app.delete("/api/delete/cafe/branch/:id",authRole(["Admin","Manager"]),authUser,refreshToken,csrfValidate,require("./src/routes/deleteCafeBranchRoutes"));
 
 // add cafe branch
-app.post("/api/add/cafe/branch",authUser,refreshToken,csrfValidate, require("./src/routes/addCafeBranchRoutes"));
+app.post("/api/add/cafe/branch",authRole(["Admin","Manager"]),authUser,refreshToken,csrfValidate, require("./src/routes/addCafeBranchRoutes"));
 
 // get all cafe branch
 app.get("/api/cafe-branch",authUser,refreshToken,csrfValidate, require("./src/routes/getAllCafeBranchRoutes"));
@@ -135,7 +137,7 @@ app.get("/api/cafe-branch/:id",authUser,refreshToken,csrfValidate,require("./src
 app.post("/api/add/order",authUser,refreshToken,csrfValidate, require("./src/routes/addOrderRoutes"));
 
 // get all orders
-app.get("/api/all/orders", authUser,refreshToken,csrfValidate,require("./src/routes/getAllOrdersRoutes"));
+app.get("/api/all/orders", authRole(["Admin","Manager"]),authUser,refreshToken,csrfValidate,require("./src/routes/getAllOrdersRoutes"));
 
 // ------------------------------------------------------------------------------------------ //
 
@@ -148,7 +150,14 @@ app.get("/api/user/logout",refreshToken,csrfValidate,require("./src/routes/userL
 
 app.get("/api/auth/user",authUser,refreshToken,csrfValidate,(req,res)=>{
   res.json({
-    message:"Access Passed"
+    message:"Access Passed",
+    user_role : req.cookies["Role"]
+  })
+})
+
+app.get("/api/auth/dashboard",authRole(["Admin","Manager"]),authUser,refreshToken,csrfValidate,(req,res)=>{
+  res.json({
+    user_role : req.cookies["Role"]
   })
 })
 

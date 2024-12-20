@@ -24,10 +24,10 @@ const LoginForm = () => {
       )
       .then((response) => {
         if(response.status !== 200){
-          navigate("/pages/login");
+          navigate("/pages/Menu");
           return
         }
-        navigate("/pages/Dashboard"); // Redirect to Dashboard on success
+        navigate("/pages/Menu"); // Redirect to Dashboard on success
         setLoading(false);
       })
       .catch((error) => {
