@@ -19,6 +19,7 @@ exports.get = async (req, res) => {
     return res.status(200).json({
       user_id: result[0].user_id,
       username: result[0].username,
+      contact: result[0].contact, 
       role: result[0].role,
       image: result[0].userImage,
     });

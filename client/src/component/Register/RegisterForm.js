@@ -6,11 +6,12 @@ import { RegisterUser } from "../../redux"; // Import the action
 import { useNavigate } from "react-router-dom";
 
 const RegisterForm = () => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     username: "",
     password: "",
     contact: "",
+    role: "", // Add role to formData
   });
 
   const dispatch = useDispatch();
@@ -24,14 +25,21 @@ const RegisterForm = () => {
     }));
   };
 
+  const handleRoleChange = (e) => {
+    setFormData((prevState) => ({
+      ...prevState,
+      role: e.target.value,
+    }));
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    setFormData({ username: "", password: "", contact: "" });
+    setFormData({ username: "", password: "", contact: "", role: "" });
     // Dispatch the registration action with user data and navigate logic
     dispatch(RegisterUser(formData, () => {
       // Success callback: Navigate to the login page
       alert("Registration successful! Redirecting to login...");
-      navigate("/pages/login")
+      navigate("/pages/login");
     }));
   };
 
@@ -98,6 +106,51 @@ const RegisterForm = () => {
               onChange={handleInputChange}
               required
             />
+          </div>
+
+          {/* Role Input (Radio Buttons) */}
+          <div>
+            <label className="block text-left text-gray-600 font-semibold mb-1">
+              Role
+            </label>
+            <div className="flex space-x-4">
+              <div className="flex items-center">
+                <input
+                  type="radio"
+                  id="barista"
+                  name="role"
+                  value="Barista"
+                  checked={formData.role === "Barista"}
+                  onChange={handleRoleChange}
+                  className="mr-2"
+                />
+                <label htmlFor="barista" className="text-gray-600">Barista</label>
+              </div>
+              <div className="flex items-center">
+                <input
+                  type="radio"
+                  id="manager"
+                  name="role"
+                  value="Manager"
+                  checked={formData.role === "Manager"}
+                  onChange={handleRoleChange}
+                  className="mr-2"
+                />
+                <label htmlFor="manager" className="text-gray-600">Manager</label>
+              </div>
+              <div className="flex items-center">
+                <input
+                  type="radio"
+                  id="admin"
+                  name="role"
+                  value="Admin"
+                  checked={formData.role === "Admin"}
+                  onChange={handleRoleChange}
+                  className="mr-2"
+                />
+                <label htmlFor="admin" className="text-gray-600">Admin</label>
+              </div>
+            </div>
           </div>
 
           {/* Submit Button */}

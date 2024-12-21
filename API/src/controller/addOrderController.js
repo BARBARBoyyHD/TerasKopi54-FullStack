@@ -17,7 +17,7 @@ exports.add = async (req, res) => {
   }
 
   // Standardized date format
-  const orderDate = moment().format("YYYY-MM-DD HH:mm:ss");
+  const orderDate = moment().format("LL");
   const connection = await db.getConnection();
 
   try {

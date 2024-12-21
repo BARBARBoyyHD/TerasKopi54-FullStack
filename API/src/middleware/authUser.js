@@ -7,7 +7,7 @@ const authUser = (req, res, next) => {
 
   // Check if the token is provided
   if (!token) {
-    console.error("No token provided");
+    console.error("from autuser : No token provided");
     return res.status(401).json({ message: "No token provided" });
   }
 

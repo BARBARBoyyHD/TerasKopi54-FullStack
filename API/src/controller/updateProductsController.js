@@ -6,10 +6,7 @@ exports.update = async (req, res) => {
     const {
       product_name,
       product_category,
-      hot_price,
-      cold_price,
-      large_size_price,
-      small_size_price,
+      price, 
     } = req.body;
 
     // Check if an image is uploaded
@@ -21,27 +18,21 @@ exports.update = async (req, res) => {
 
     if (image_url) {
       // If a new image is uploaded, update the image URL
-      sql = `UPDATE product SET product_name = ?, product_category = ?, hot_price = ?, cold_price = ?, large_size_price = ?, small_size_price = ?, image_url = ? WHERE product_id = ?`;
+      sql = `UPDATE product SET product_name = ?, product_category = ?, price = ?,  image_url = ? WHERE product_id = ?`;
       params = [
         product_name,
         product_category,
-        hot_price,
-        cold_price,
-        large_size_price,
-        small_size_price,
+        price,
         image_url,
         id,
       ];
     } else {
       // If no new image is uploaded, don't update the image URL
-      sql = `UPDATE product SET product_name = ?, product_category = ?, hot_price = ?, cold_price = ?, large_size_price = ?, small_size_price = ? WHERE product_id = ?`;
+      sql = `UPDATE product SET product_name = ?, product_category = ?, price = ? WHERE product_id = ?`;
       params = [
         product_name,
         product_category,
-        hot_price,
-        cold_price,
-        large_size_price,
-        small_size_price,
+        price,
         id,
       ];
     }

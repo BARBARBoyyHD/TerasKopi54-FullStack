@@ -15,6 +15,7 @@ const ButtonDeleteInventory = ({ itemId }) => {
   const handleDelete = (id) => {
     dispatch(deleteInventory(id));
     dispatch(getInventory());
+    window.location.reload();
   };
 
   return (

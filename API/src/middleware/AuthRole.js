@@ -1,37 +1,37 @@
-const jwt = require('jsonwebtoken');
+const jwt = require("jsonwebtoken");
 
 const validateRole = (roles) => {
-    return (req, res, next) => {
-        const token = req.cookies?.accessToken;
-        
-        if (!token) {
-            console.error("No token provided");
-            return res.status(401).json({ message: "No token provided" });
-        }
-        
-        try {
-            // Verify and decode the token
-            const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
+  return (req, res, next) => {
+    const token = req.cookies.accessToken;
 
-            // Log decoded token for debugging
-            console.log("Decoded Token:", decoded);
+    if (!token) {
+      console.error("from auth role : No token provided");
+      return res.status(401).json({ message: "No token provided" });
+    }
 
-            // Attach the decoded data to req.user
-            req.user = decoded;
+    try {
+      // Verify and decode the token
+      const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
 
-            // Check if the user's role is included in the allowed roles
-            if (roles.includes(req.user.role)) {
-                // Proceed to the next middleware
-                return next();
-            } else {
-                console.error("Insufficient permissions");
-                return res.status(403).json({ message: "Forbidden" });
-            }
-        } catch (error) {
-            console.error("Auth Middleware Error:", error.message);
-            return res.status(401).json({ message: "Invalid token" });
-        }
-    };
+      // Log decoded token for debugging
+      console.log("Decoded Token:", decoded);
+
+      // Attach the decoded data to req.user
+      req.user = decoded;
+
+      // Check if the user's role is included in the allowed roles
+      if (roles.includes(req.user.role)) {
+        // Proceed to the next middleware
+        return next();
+      } else {
+        console.error("Insufficient permissions");
+        return res.status(403).json({ message: "Forbidden" });
+      }
+    } catch (error) {
+      console.error("Auth Middleware Error:", error.message);
+      return res.status(401).json({ message: "Invalid token" });
+    }
+  };
 };
 
 module.exports = validateRole;

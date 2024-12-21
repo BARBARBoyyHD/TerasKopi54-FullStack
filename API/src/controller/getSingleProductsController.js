@@ -4,7 +4,6 @@ exports.getSingle = async (req, res) => {
   try {
     const { id } = req.params;
     const sql = "SELECT * FROM product WHERE product_id = ?";
-
     const [result] = await db.query(sql, [id]);
     if (result.length === 0) {
       return res.status(404).json({

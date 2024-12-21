@@ -3,6 +3,11 @@ import { useSelector, useDispatch } from "react-redux";
 import { getProducts } from "../../redux";
 import { RiPencilFill } from "react-icons/ri";
 import { MdDelete } from "react-icons/md";
+import AddProductModal from "../Modal/AddProductModal";
+import EditItemModalForm from "../Modal/EditItemModalForm";
+import EditProductModal from "../Modal/EditProductModal";
+import ButtonDeleteProduct from "../Button/ButtonDeleteProduct";
+
 
 const AllProduct = () => {
   const dispatch = useDispatch();
@@ -41,7 +46,7 @@ const AllProduct = () => {
       <h1 className="text-2xl font-bold mb-4 text-white">All Products</h1>
 
       {/* Search Bar */}
-      <div className="mb-4 flex justify-end">
+      <div className="mb-4 flex justify-end gap-2">
         <input
           type="text"
           className="border rounded-md p-2 w-full max-w-sm"
@@ -49,6 +54,7 @@ const AllProduct = () => {
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
         />
+        <AddProductModal/>
       </div>
 
       {/* Table */}
@@ -98,13 +104,13 @@ const AllProduct = () => {
                     className=" text-2xl flex text-center gap-4 mt-8"
                   >
                     {/* Edit button */}
-                    <button className="text-green-500 hover:text-green-700 transition">
-                      <RiPencilFill />
-                    </button>
+                   
+                      <EditProductModal item_id = {product.product_id}/>
+                   
                     {/* Delete button */}
-                    <button className="text-red-500 hover:text-red-700 transition">
-                      <MdDelete />
-                    </button>
+                   
+                    <ButtonDeleteProduct item_id={product.product_id}/>
+                    
                   </td>
                 </tr>
               ))}

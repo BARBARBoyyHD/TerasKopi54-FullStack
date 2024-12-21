@@ -2,7 +2,7 @@ const db = require("../../db");
 
 exports.add = async (req, res) => {
   try {
-    const { product_name, product_category, hot_price, cold_price } = req.body;
+    const { product_name, product_category, price } = req.body;
 
     // Check if image was uploaded
     if (!req.file) {
@@ -23,26 +23,25 @@ exports.add = async (req, res) => {
       INSERT INTO product (
         product_name, 
         product_category, 
-        hot_price, 
-        cold_price, 
+        price, 
         image_url
-      ) VALUES (?, ?, ?, ?, ?)
+      ) VALUES (?, ?, ?, ?)
     `;
 
     const [result] = await db.query(sql, [
       product_name,
       product_category,
-      hot_price,
-      cold_price,
+      price,
       image_url,
     ]);
+
     if (result.affectedRows > 0) {
-      return res.status(200).json({ message: "Product added successfully" });
+      return res.status(201).json({ message: "Product added successfully" });
     } else {
-      return res.status(404).json({ message: "Product not added" });
+      return res.status(400).json({ message: "Failed to add product" });
     }
   } catch (error) {
-    console.error(error);
+    console.error("Error adding product:", error);
     return res.status(500).json({ message: "Internal Server Error" });
   }
 };

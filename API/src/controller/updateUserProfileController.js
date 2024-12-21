@@ -1,8 +1,21 @@
 const db = require("../../db");
-
+const jwt = require("jsonwebtoken");
 exports.update = async (req, res) => {
+  const token = req.cookies.accessToken;
+  if (!token) {
+    res.status(401).json({
+      message: "No Token Provided",
+    });
+  }
   try {
-    const id = req.cookies["userId"];
+    const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
+    const id = decoded.id
+    const findUser = "SELECT * FROM users WHERE user_id = ?";	
+    const [user] = await db.query(findUser, [id]);
+
+    if(user.length === 0){
+      return res.status(404).json({ message: "User not found" });
+    }
     const { username, contact } = req.body;
 
     // Check if a new image is uploaded
