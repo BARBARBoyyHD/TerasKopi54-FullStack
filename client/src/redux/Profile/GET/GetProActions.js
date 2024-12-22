@@ -27,7 +27,7 @@ export const getUserProfile = ()=>{
         axios.get("http://localhost:5000/api/user/profile",{withCredentials:true})
         .then((response)=>{
             dispatch(getProfileSuccess(response.data))
-            console.log(response.data);
+            
         })
         .catch((error)=>{
             dispatch(getProfileError(error.message))

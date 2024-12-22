@@ -14,7 +14,7 @@ const AuthDashboard = () => {
 
       if (res.ok) {
         const data = await res.json();
-        console.log(data);
+
         if(data.user_role === "Admin" || data.user_role === "Manager"){
           setIsAuthenticated(true);
         }

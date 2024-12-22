@@ -20,7 +20,7 @@ const calculateBasketSize = (io) => {
         const averageBasketSize = totalOrders > 0 ? (totalItemsSold / totalOrders).toFixed(2) : 0;
 
         io.emit("AverageBasketSize", averageBasketSize);
-        console.log(`Average Basket Size: ${averageBasketSize}`);
+        
       } catch (error) {
         console.error("Database query failed:", error.message);
         io.emit("Error", "Failed to calculate basket size");

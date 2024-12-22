@@ -16,7 +16,7 @@ const ButtonToLogin = () => {
       <button
         type="button"
         onClick={handleClick}
-        className={`w-full bg-green-600 text-white font-bold py-2 rounded-md flex justify-center items-center transition-all duration-200 ${
+        className={`w-full bg-stone-800 text-white font-bold py-2 rounded-md flex justify-center items-center transition-all duration-200 ${
           loading ? "opacity-50 cursor-not-allowed" : "hover:bg-green-700 focus:ring-4 focus:ring-green-300"
         }`}
         disabled={loading} // Disable button while loading

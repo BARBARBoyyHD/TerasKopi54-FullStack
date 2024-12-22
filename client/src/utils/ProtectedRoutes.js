@@ -14,7 +14,6 @@ const ProtectedRoutes = () => {
       });
       if (res.ok) {
         const data = await res.json();
-        console.log(data);
         if (data.message === "Access Passed") {
           setIsAuthenticated(true);
         } else {

@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getInventory } from "../../redux";
-import { RiPencilFill } from "react-icons/ri";
-import { MdDelete } from "react-icons/md";
-import AddItemModalForm from "../Modal/AddItemModalForm";
-import axios from "axios";
 import ButtonDeleteInventory from "../Button/ButtonDeleteInventory";
+import AddItemModalForm from "../Modal/AddItemModalForm";
 import EditItemModalForm from "../Modal/EditItemModalForm";
+import useAuthRole from "../../utils/AuthRole";
 const AllInventoryComponent = () => {
+  const isManagerAdmin = useAuthRole()
   const dispatch = useDispatch();
   const {
     loading,
@@ -98,17 +97,24 @@ const AllInventoryComponent = () => {
               !error &&
               currentItems?.map((item) => (
                 <tr key={item.item_id} className="border-b">
-                  <td className="px-4 py-2">{item.item_id}</td>
-                  <td className="px-4 py-2">{item.item_name}</td>
-                  <td className="px-4 py-2">{item.quantity}</td>
-                  <td className="px-4 py-2">Rp {item.price_per_pcs}</td>
-                  <td className="px-4 py-2">{item.AddedAt}</td>
-                  <td className="px-4 py-2">{item.UpdatedAt}</td>
-                  <td className="px-4 py-2 flex gap-2 justify-center">
-                    <EditItemModalForm itemId={item.item_id} />
-                    <ButtonDeleteInventory itemId={item.item_id} />
-                  </td>
-                </tr>
+                <td className="px-4 py-2">{item.item_id}</td>
+                <td className="px-4 py-2">{item.item_name}</td>
+                <td className="px-4 py-2">{item.quantity}</td>
+                <td className="px-4 py-2">Rp {item.price_per_pcs}</td>
+                <td className="px-4 py-2">
+                  {new Date(item.AddedAt).toLocaleDateString('en-US')}
+                </td>
+                <td className="px-4 py-2">
+                  {new Date(item.UpdatedAt).toLocaleDateString('en-US')}
+                </td>
+                <td className="px-4 py-2 flex gap-2 justify-center">
+                  <EditItemModalForm itemId={item.item_id} />
+                  {
+                    isManagerAdmin && <ButtonDeleteInventory itemId={item.item_id} />
+                  }
+                </td>
+              </tr>
+              
               ))}
           </tbody>
         </table>

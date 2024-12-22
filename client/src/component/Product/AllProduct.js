@@ -1,18 +1,15 @@
 import React, { useEffect, useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { getProducts } from "../../redux";
-import { RiPencilFill } from "react-icons/ri";
-import { MdDelete } from "react-icons/md";
-import AddProductModal from "../Modal/AddProductModal";
-import EditItemModalForm from "../Modal/EditItemModalForm";
-import EditProductModal from "../Modal/EditProductModal";
 import ButtonDeleteProduct from "../Button/ButtonDeleteProduct";
-
+import AddProductModal from "../Modal/AddProductModal";
+import EditProductModal from "../Modal/EditProductModal";
+import useAuthRole from "../../utils/AuthRole";
 
 const AllProduct = () => {
   const dispatch = useDispatch();
   const { loading, data, error } = useSelector((state) => state.getProducts);
-
+  const isManagerAdmin = useAuthRole();
   // States for search and pagination
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
@@ -54,7 +51,7 @@ const AllProduct = () => {
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
         />
-        <AddProductModal/>
+        {isManagerAdmin && <AddProductModal />}
       </div>
 
       {/* Table */}
@@ -67,7 +64,7 @@ const AllProduct = () => {
               <th className="p-4">Category</th>
               <th className="p-4">Price</th>
               <th className="p-4">Image</th>
-              <th className="p-4">Action</th>
+              {isManagerAdmin && <th className="p-4">Action</th>}
             </tr>
           </thead>
           <tbody>
@@ -99,19 +96,20 @@ const AllProduct = () => {
                       className="w-16 h-16 object-cover rounded-md"
                     />
                   </td>
-                  <td
-                    colSpan="5"
-                    className=" text-2xl flex text-center gap-4 mt-8"
-                  >
-                    {/* Edit button */}
-                   
-                      <EditProductModal item_id = {product.product_id}/>
-                   
-                    {/* Delete button */}
-                   
-                    <ButtonDeleteProduct item_id={product.product_id}/>
-                    
-                  </td>
+                  {isManagerAdmin && (
+                    <td
+                      colSpan="5"
+                      className=" text-2xl flex text-center gap-4 mt-8"
+                    >
+                      {/* Edit button */}
+
+                      <EditProductModal item_id={product.product_id} />
+
+                      {/* Delete button */}
+
+                      <ButtonDeleteProduct item_id={product.product_id} />
+                    </td>
+                  )}
                 </tr>
               ))}
             {!loading && !currentItems.length && (

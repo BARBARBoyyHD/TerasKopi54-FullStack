@@ -13,7 +13,7 @@ const CountItemSold = (io) => {
 
         // Emit the count to all connected clients
         io.emit("CountItemSold", result[0].total_items_sold);
-        console.log("Updated item count:", result[0].total_items_sold);
+       
       } catch (error) {
         console.error("Database query failed:", error.message);
         socket.emit("Error", "Failed to fetch item count");

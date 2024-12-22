@@ -3,6 +3,7 @@ import { getUserProfile } from "../../redux";
 import { useDispatch, useSelector } from "react-redux";
 import profileimg from "../../asset/profile-circle-svgrepo-com.svg";
 import EditProfileModal from "../Modal/EditProfileModal";
+import LoadingSpinner from "../Loading/LoadingSpinner";
 
 const UserProfileComponent = () => {
   const dispatch = useDispatch();
@@ -16,7 +17,7 @@ const UserProfileComponent = () => {
   }, [dispatch]);
 
   if (loading) {
-    return <div className="text-white">Loading...</div>; // Display loading indicator
+    return <LoadingSpinner/>; // Display loading indicator
   }
 
   if (error) {

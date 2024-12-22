@@ -8,7 +8,7 @@ const sumTotalRevenue = async (io) => {
         const sql = "SELECT SUM(total_price) as Revenue FROM orders;"
         const [result] = await db.query(sql);
         io.emit("SumTotalRevenue", {Revenue : parseInt(result[0].Revenue)});
-        console.log(result);
+      
 
       } catch (error) {
         console.error("Database query failed:", error.message);

@@ -14,7 +14,7 @@ const validateRole = (roles) => {
       const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
 
       // Log decoded token for debugging
-      console.log("Decoded Token:", decoded);
+      
 
       // Attach the decoded data to req.user
       req.user = decoded;

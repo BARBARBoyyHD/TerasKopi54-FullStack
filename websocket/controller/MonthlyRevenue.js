@@ -10,7 +10,7 @@ const getMonthlyRevenue = async (io) => {
         const [result] = await db.query(sql);
 
         io.emit("MonthlyRevenue", result);
-        console.log(result);
+   
 
       } catch (error) {
         console.error("Database query failed:", error.message);

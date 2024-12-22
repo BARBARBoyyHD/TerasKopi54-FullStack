@@ -38,7 +38,7 @@ export const getProducts = () => {
       .then((response) => {
         // Extract the 'data' property from the API response
         dispatch(getProductSuccess(response.data.data));
-        console.log(response.data.data);  
+     
 
       })
       .catch((error) => {

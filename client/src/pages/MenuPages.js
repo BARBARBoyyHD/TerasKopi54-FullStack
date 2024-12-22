@@ -40,7 +40,7 @@ const MenuPages = () => {
 
         {/* Dashboard Content */}
         <div className="w-full max-w-screen-lg min-h-screen shadow-md rounded-lg p-4  bg-black  md:ml-0 md:mx-auto">
-          <h1 className='text-white'>This is Menu</h1>
+          
           <div>
             <MenuLayout/>
           </div>

@@ -13,7 +13,7 @@ const sumAllProduct = (io) => {
 
         // Send updated totals to all clients
         io.emit("SumAllProduct", result);
-        console.log(result);
+       
       } catch (error) {
         console.error("Database query failed:", error.message);
         io.emit("Error", "Failed to fetch product totals");

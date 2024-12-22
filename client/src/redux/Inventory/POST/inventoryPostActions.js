@@ -41,7 +41,6 @@ export const postInventory = (data) => {
       .then((response) => {
         const inventoryData = response.data.data;
         dispatch(postInventorySuccess(inventoryData));
-        console.log("Inventory added successfully:", inventoryData);
       })
       .catch((error) => {
         console.error("Error adding inventory:", error);

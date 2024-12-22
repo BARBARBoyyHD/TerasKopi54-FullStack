@@ -156,7 +156,7 @@ const RegisterForm = () => {
           {/* Submit Button */}
           <button
             type="submit"
-            className={`w-full bg-green-600 text-white font-bold py-2 rounded-md transition-all duration-200 flex justify-center items-center ${
+            className={`w-full bg-stone-800 text-white font-bold py-2 rounded-md transition-all duration-200 flex justify-center items-center ${
               loading
                 ? "opacity-50 cursor-not-allowed"
                 : "hover:bg-green-700 focus:ring-4 focus:ring-green-300"
@@ -185,7 +185,7 @@ const RegisterForm = () => {
                 ></path>
               </svg>
             ) : (
-              "Register"
+              "Submit"
             )}
           </button>
         </form>

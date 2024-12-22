@@ -4,7 +4,7 @@ import NavbarHomePages from "../component/Navbar/NavbarHomePages";
 
 const HomePage = () => {
   return (
-    <div className="bg-green-900 min-h-screen flex flex-col">
+    <div className="bg-stone-800 min-h-screen flex flex-col">
       {/* Navbar Section */}
       <header>
         <NavbarHomePages />
