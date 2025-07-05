@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { FaBox, FaHome } from "react-icons/fa";
 import { FiLogOut } from "react-icons/fi";
 import { IoCafeSharp, IoClose } from "react-icons/io5";
+import { FaRegMessage } from "react-icons/fa6";
 import { MdRestaurantMenu, MdWarehouse } from "react-icons/md";
 import { Link } from "react-router-dom";
 import ButtonLogout from "../Button/ButtonLogout";
@@ -69,15 +70,16 @@ const SideBarMobile = ({ onClose }) => {
               <span>Products</span>
             </Link>
           </li>
-          {/* <li>
-            <Link
-              to="/pages/Cafe/Branch"
-              className="flex items-center space-x-2 p-2 hover:bg-gray-700 rounded-md"
-            >
-              <IoCafeSharp />
-              <span>Cafe Branch</span>
+          <li>
+            <Link to="/pages/logs">
+              <a className="flex items-center space-x-2 p-2 hover:bg-gray-700 rounded-md">
+                <span>
+                  <FaRegMessage />
+                </span>
+                <span>Logs</span>
+              </a>
             </Link>
-          </li> */}
+          </li>
           <div className="w-auto border border-gray-200"></div>
           <div className="space-x-2 p-2 flex gap-2  hover:bg-gray-700 rounded-md">
             <ProfileButton />

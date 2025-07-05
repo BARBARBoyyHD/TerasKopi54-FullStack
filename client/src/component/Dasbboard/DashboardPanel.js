@@ -1,52 +1,59 @@
-import React from "react";
-import Orderdetail from "./Orderdetail";
-import ChartRevenue from "./ChartRevenue";
-import ItemSold from "./ItemSold";
-import AverageBasketSize from "./AverageBasketSize";
-import MonthlyChart from "./MonthlyChart";
-import TopProduct from "./TopProduct";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import BASE_URL from "../../config/BaseURL";
+import Card from "./Card";
+import Chart from "./Chart";
+import DateFilter from "./DateFilter";
 
 const DashboardPanel = () => {
-  return (
-    <div className="w-full max-w-screen-lg min-h-screen shadow-md rounded-lg p-4  bg-black  md:ml-0 md:mx-auto">
-      <div>
-        <div className="flex items-center mb-4 justify-center md:flex-col md:justify-start">
-    
-          <h1 className="text-2xl font-bold text-white">Sort by</h1>
-        </div>
-      </div>
+  const [data, setData] = useState(null);
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
+  const [range, setRange] = useState("");
 
-      <div className="flex flex-col justify-center">
-        <div className="w-auto  flex flex-wrap justify-center gap-3">
-          <div className="text-white w-[300px] h-[200px] rounded-md border-none  bg-[#7b59d7] flex justify-center items-center flex-col">
-            <h1 className="text-2xl font-bold">Revenue</h1>
-            <ChartRevenue />
-          </div>
-          <div className="text-white w-[300px] h-[200px] rounded-md  border-none bg-[#7b59d7] flex justify-center items-center flex-col">
-            <h1 className="text-2xl font-bold">Item Sold</h1>
-            <ItemSold />
-          </div>
-          <div className="text-white w-[300px] h-[200px] rounded-md  border-none bg-[#7b59d7] flex justify-center items-center flex-col">
-            <h1 className="text-2xl font-bold">Average Basket Size</h1>
-            <AverageBasketSize />
-          </div>
-        </div>
-        <div className="w-auto  flex flex-wrap justify-center gap-3 mt-2">
-          <div className="text-white w-[615px] h-[400px] border rounded-md flex justify-center items-center flex-col">
-            <h1 className="font-bold">Monthly Chart</h1>
-            <MonthlyChart />
-          </div>
-          <div className="text-white w-[300px] h-[400px] rounded-md border flex justify-center items-center flex-col">
-            <h1 className="font-bold">Top Product</h1>
-            <TopProduct />
-          </div>
-        </div>
-        <div className="w-auto flex flex-wrap justify-center gap-3 mt-2">
-          <div className="text-white w-full h-auto rounded-md border-none flex justify-center items-center">
-            <Orderdetail />
-          </div>
-        </div>
-      </div>
+  const handleData = async (passedRange = range) => {
+    try {
+      const params = {};
+      if (startDate && endDate) {
+        params.start = startDate;
+        params.end = endDate;
+      } else if (passedRange) {
+        params.range = passedRange;
+      }
+
+      const res = await axios.get(`${BASE_URL}/api/salesReport`, {
+        params,
+        withCredentials: true,
+      });
+      setData(res.data);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  useEffect(() => {
+    handleData(); 
+  }, []);
+
+  return (
+    <div className="p-6 bg-slate-50 min-h-screen w-full">
+      <h1 className="text-3xl font-semibold text-slate-800 mb-6">
+        Sales Report
+      </h1>
+
+      <DateFilter
+        startDate={startDate}
+        endDate={endDate}
+        setStartDate={setStartDate}
+        setEndDate={setEndDate}
+        setRange={setRange}
+        onFilter={handleData}
+      />
+
+      <section className="gap-8 flex flex-col">
+        {data ? <Card props={data} /> : <p>Loading cards...</p>}
+        {data ? <Chart props={data} /> : <p>Loading charts...</p>}
+      </section>
     </div>
   );
 };

@@ -1,4 +1,4 @@
-const db = require("../../db");
+const db = require("../config/mysql/db");
 
 exports.update = async (req, res) => {
   try {
@@ -8,18 +8,21 @@ exports.update = async (req, res) => {
     const sql =
       "UPDATE cafe_branch SET branch_name = ?, address_branch = ?, contact = ? WHERE id_branch = ?";
 
-    const[result] = await db.query(sql,[id,branch_name,address_branch,contact])
-    if(result.affectedRows > 0){
-        return res.status(200).json({
-            message:"cafe branch updated"
-        })
+    const [result] = await db.query(sql, [
+      id,
+      branch_name,
+      address_branch,
+      contact,
+    ]);
+    if (result.affectedRows > 0) {
+      return res.status(200).json({
+        message: "cafe branch updated",
+      });
+    } else {
+      return res.status(404).json({
+        message: "failed to update",
+      });
     }
-    else{
-        return res.status(404).json({
-            message:"failed to update"
-        })
-    }
-
   } catch (error) {
     console.error(error);
     return res.status(500).json({

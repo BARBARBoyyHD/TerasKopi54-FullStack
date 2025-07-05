@@ -3,6 +3,7 @@ import { FaBars, FaBox, FaHome } from "react-icons/fa";
 import { FiLogOut } from "react-icons/fi";
 import { IoCafeSharp, IoClose } from "react-icons/io5";
 import { MdRestaurantMenu, MdWarehouse } from "react-icons/md";
+import { FaRegMessage } from "react-icons/fa6";
 import { Link } from "react-router-dom";
 import ButtonLogout from "../Button/ButtonLogout";
 import ProfileButton from "../Profile/ProfileButton";
@@ -44,67 +45,57 @@ const SideBarMenu = () => {
           <ul className="space-y-4 flex flex-col justify-center items-center">
             {isManagerAdmin && (
               <li>
-                <a className="flex items-center space-x-2 p-2 hover:bg-gray-700 rounded-md">
-                  <span>
-                    <FaHome />
-                  </span>
-                  {isOpen && (
-                    <Link to="/pages/Dashboard">
-                      <span>Dashboard</span>
-                    </Link>
-                  )}
-                </a>
+                <Link to="/pages/Dashboard">
+                  <a className="flex items-center space-x-2 p-2 hover:bg-gray-700 rounded-md">
+                    <span>
+                      <FaHome />
+                    </span>
+                    {isOpen && <span>Dashboard</span>}
+                  </a>
+                </Link>
               </li>
             )}
 
             <li>
-              <a className="flex items-center space-x-2 p-2 hover:bg-gray-700 rounded-md">
-                <span>
-                  <MdRestaurantMenu />
-                </span>
-                {isOpen && (
-                  <Link to="/pages/Menu">
-                    <span>Menu</span>
-                  </Link>
-                )}
-              </a>
+              <Link to="/pages/Menu">
+                <a className="flex items-center space-x-2 p-2 hover:bg-gray-700 rounded-md">
+                  <span>
+                    <MdRestaurantMenu />
+                  </span>
+                  {isOpen && <span>Menu</span>}
+                </a>
+              </Link>
             </li>
             <li>
-              <a className="flex items-center space-x-2 p-2 hover:bg-gray-700 rounded-md">
-                <span>
-                  <MdWarehouse />
-                </span>
-                {isOpen && (
-                  <Link to="/pages/Inventory">
-                    <span>Inventory</span>
-                  </Link>
-                )}
-              </a>
+              <Link to="/pages/Inventory">
+                <a className="flex items-center space-x-2 p-2 hover:bg-gray-700 rounded-md">
+                  <span>
+                    <MdWarehouse />
+                  </span>
+                  {isOpen && <span>Inventory</span>}
+                </a>
+              </Link>
             </li>
             <li>
-              <a className="flex items-center space-x-2 p-2 hover:bg-gray-700 rounded-md">
-                <span>
-                  <FaBox />
-                </span>
-                {isOpen && (
-                  <Link to="/pages/Product/list">
-                    <span>Products</span>
-                  </Link>
-                )}
-              </a>
+              <Link to="/pages/Product/list">
+                <a className="flex items-center space-x-2 p-2 hover:bg-gray-700 rounded-md">
+                  <span>
+                    <FaBox />
+                  </span>
+                  {isOpen && <span>Products</span>}
+                </a>
+              </Link>
             </li>
-            {/* <li>
-              <a className="flex flex-wrap items-center space-x-2 p-2 hover:bg-gray-700 rounded-md">
-                <span>
-                  <IoCafeSharp />
-                </span>
-                {isOpen && (
-                  <Link to="/pages/Cafe/Branch">
-                    <span>Cafe Branch</span>
-                  </Link>
-                )}
-              </a>
-            </li> */}
+            <li>
+              <Link to="/pages/logs">
+                <a className="flex items-center space-x-2 p-2 hover:bg-gray-700 rounded-md">
+                  <span>
+                    <FaRegMessage />
+                  </span>
+                  {isOpen && <span>Logs</span>}
+                </a>
+              </Link>
+            </li>
             <div className="w-[100%] border border-gray-200 "></div>
             <div className="mt-9">
               <div className="flex flex-col w-auto gap-6">
